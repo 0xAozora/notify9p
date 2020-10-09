@@ -75,10 +75,11 @@ func main() {
 				dir.Put(path, struct{}{})
 			case notify.Remove:
 				dir.Remove(path)
-				length := len(path) + 1
+				path += "/"
+				length := len(path)
 				for {
 					n, found := dir.Ceiling(path)
-					if !(found && len(n.Key.(string)) >= length && n.Key.(string)[:length] == path+"/") {
+					if !(found && len(n.Key.(string)) >= length && n.Key.(string)[:length] == path) {
 						break
 					}
 					dir.Remove(n.Key)
@@ -89,10 +90,11 @@ func main() {
 					dir.Put(path, struct{}{})
 				} else {
 					dir.Remove(path)
-					length := len(path) + 1
+					path += "/"
+					length := len(path)
 					for {
 						n, found := dir.Ceiling(path)
-						if !(found && len(n.Key.(string)) >= length && n.Key.(string)[:length] == path+"/") {
+						if !(found && len(n.Key.(string)) >= length && n.Key.(string)[:length] == path) {
 							break
 						}
 						dir.Put(newpath+n.Key.(string)[length-1:], struct{}{})
